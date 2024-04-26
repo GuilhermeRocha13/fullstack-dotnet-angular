@@ -12,7 +12,7 @@ namespace ProEvent.API.Models
         public string dataEvento{ get; set; }
         public string tema{ get; set; }
         public int qtPessoas{ get; set; }
-        public string lote{ get; set; }
+        public int lote{ get; set; }
         public string imagemURL{ get; set; }
     }
 }

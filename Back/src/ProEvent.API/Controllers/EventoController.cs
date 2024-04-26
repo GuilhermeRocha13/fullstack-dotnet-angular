@@ -13,21 +13,37 @@ namespace ProEvent.API.Controllers
     public class EventoController : ControllerBase
     {
 
+        public IEnumerable<Evento> _evento = new Evento[] { //as propriedades do novo objeto é definido entre chaves
+                new Evento() {
+                    EventoID = 1,
+                    local = "BELO HORIZON", 
+                    dataEvento = DateTime.Now.AddDays(1).ToString(),
+                    qtPessoas = 50,
+                    lote = 3
+                },
+                new Evento() {
+                    EventoID = 2,
+                    local = "PARANÃ", 
+                    dataEvento = DateTime.Now.AddDays(2).ToString(),
+                    qtPessoas = 30,
+                    lote = 3
+                }
+            };
         public EventoController()
         {
 
         }
 
-        [HttpGet("{evento}")]
-        public Evento Get(string evento)
+         [HttpGet]
+        public IEnumerable<Evento> Get()
         { 
-            return new Evento(){ //as propriedades do novo objeto é definido entre chaves
-                EventoID = 1,
-                local = "BH",
-                dataEvento = DateTime.Now.AddDays(1).ToString(),
-                qtPessoas = 50,
-                lote = "3"
-            };
+            return _evento;
+        }
+
+        [HttpGet("{id}")]
+        public IEnumerable<Evento> Get(int id)
+        { 
+            return _evento.Where(evento => evento.EventoID == id);
         }
 
 
