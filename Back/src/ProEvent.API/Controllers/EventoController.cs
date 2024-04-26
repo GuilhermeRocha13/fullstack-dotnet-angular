@@ -18,11 +18,15 @@ namespace ProEvent.API.Controllers
 
         }
 
-        [HttpGet]
-        public Evento Get()
+        [HttpGet("{evento}")]
+        public Evento Get(string evento)
         { 
             return new Evento(){ //as propriedades do novo objeto é definido entre chaves
-                EventoID = 1
+                EventoID = 1,
+                local = "BH",
+                dataEvento = DateTime.Now.AddDays(1).ToString(),
+                qtPessoas = 50,
+                lote = "3"
             };
         }
 
