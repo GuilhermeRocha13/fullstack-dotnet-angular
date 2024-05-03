@@ -8,6 +8,15 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
+
 export class AppComponent {
   title = 'ProEventos-app';
 }
+@Component({
+  selector: 'app-eventos',
+  templateUrl: './eventos/eventos.component.html',
+  styleUrl: './eventos/eventos.component.scc'
+})
+
+export class e
+
