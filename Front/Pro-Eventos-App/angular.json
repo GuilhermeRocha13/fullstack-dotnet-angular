@@ -127,5 +127,8 @@
       }
     }
   },
-  "defaultProject": "Pro-Eventos-App"
+  "defaultProject": "Pro-Eventos-App",
+  "cli": {
+    "analytics": "e2125213-ef96-46c2-9a86-6a9def715936"
+  }
 }
