@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { PalestrantesComponent } from './palestrantes/palestrantes.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, PalestrantesComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -12,11 +13,5 @@ import { RouterOutlet } from '@angular/router';
 export class AppComponent {
   title = 'ProEventos-app';
 }
-@Component({
-  selector: 'app-eventos',
-  templateUrl: './eventos/eventos.component.html',
-  styleUrl: './eventos/eventos.component.scc'
-})
 
-export class e
 
