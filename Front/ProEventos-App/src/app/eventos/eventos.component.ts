@@ -16,7 +16,7 @@ export class EventosComponent {
   constructor(private http: HttpClient) { }
 
   ngOnInit():void {
-    this.getEventos
+    this.getEventos();
   }
 
   public getEventos(): void {
