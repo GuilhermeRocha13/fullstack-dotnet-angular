@@ -2,7 +2,13 @@
 
 
 
-<div *ngFor="let item of eventos">
-    <p>{{item.Tema}}</p>
-    <p>{{item.Local}}</p>
-</div>
+<div *ngIf="eventos">
+    <h2>Eventos</h2>
+    <ul>
+      <li *ngFor="let evento of eventos">
+        {{ evento.nome }} - {{ evento.data }}
+      </li>
+    </ul>
+  </div>
+  
+  
