@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-eventos',
@@ -9,8 +10,21 @@ import { Component } from '@angular/core';
 })
 export class EventosComponent {
 
-  public evento: any = {
-    Tema: 'Angu',
-    Local: 'BH'
+  public eventos: any ;
+
+  public getEventos(): void {
+    this.eventos = [ {
+      Tema: 'Angu',
+      Local: 'BH'
+    },
+    {
+      Tema: 'Ang',
+      Local: 'B'
+    },
+    {
+      Tema: 'a',
+      Local: 'bH'
+    }
+  ]
   }
 }
