@@ -57,6 +57,7 @@ namespace ProEvent.API
                              .AllowAnyMethod()
                              .AllowAnyOrigin()
             );
+            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
