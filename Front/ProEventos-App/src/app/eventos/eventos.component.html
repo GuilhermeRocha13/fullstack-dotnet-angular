@@ -1,4 +1,4 @@
-<p>eventos works!</p>
+<!-- <p>eventos works!</p>
 
 
 
@@ -7,5 +7,37 @@
     <p> tema: {{evento.tema}}</p>
     <p> lote: {{evento.lote}}</p>
     <hr>
-</div>
+</div> -->
+<h2>Eventos</h2>
 
+<form action="" class="form-inline">
+    <div class="form-group mb-2">
+        <input type="text" class="form-control mr-2" placeholder="buscar">
+        <button class="btn btn-outline-success">buscar</button>
+    </div>
+</form>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr id="tabela">
+            <th>id</th>
+            <th>local</th>
+            <th>Data</th>
+            <th>Tema</th>
+            <th>qt pesssoa</th>
+            <th>lote</th>
+            <th>imagem</th>
+            <th>opções</th>
+        </tr>
+    </thead>
+    <tbody *ngFor="let item of eventos">
+        <tr>
+            <td>{{item.id}}</td>
+            <td>{{item.local}}</td>
+            <td>{{item.dataEvento}}</td>
+            <td>{{item.tema}}</td>
+            <td>{{item.qtPessoas}}</td>
+            <td>{{item.lote}}</td>
+            <td>{{item.imagemURL}}</td>
+        </tr>
+    </tbody>
+</table>
