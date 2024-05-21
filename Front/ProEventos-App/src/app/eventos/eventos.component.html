@@ -29,8 +29,8 @@
             <th>opções</th>
         </tr>
     </thead>
-    <tbody *ngFor="let item of eventos">
-        <tr>
+    <tbody *ngIf="eventos && eventos.lenght">
+        <tr *ngFor="let item of eventos">
             <td>{{item.id}}</td>
             <td>{{item.local}}</td>
             <td>{{item.dataEvento}}</td>
@@ -40,4 +40,13 @@
             <td>{{item.imagemURL}}</td>
         </tr>
     </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="8" class="text-center"></td>
+            <h4>sem eventos</h4>
+        </tr>
+    </tfoot>
 </table>
+
+
+{{eventos | json}}
