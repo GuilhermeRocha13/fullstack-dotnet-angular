@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { error } from 'console';
+import { response } from 'express';
 
 @Component({
   selector: 'app-eventos',
@@ -12,7 +13,7 @@ import { error } from 'console';
 })
 export class EventosComponent {
 
-  public eventos: any ;
+  public eventos: any = [] ;
 
   
   
@@ -25,12 +26,8 @@ export class EventosComponent {
   public getEventos(): void {
     
     this.http.get('https://localhost:5001/api/eventos/').subscribe(
-      response => {
-         this.eventos = response
-      },
-      error => {
-        console.error(error);
-      }
+      response => this.eventos = response,
+      error => console.log(error)
     );
   }
   public teste(): void{
