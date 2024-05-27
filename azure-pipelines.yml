@@ -15,6 +15,7 @@ steps:
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
+    condition: and(not(failed()), not(canceled()))
 
 - task: VSBuild@1
   inputs:
@@ -22,11 +23,13 @@ steps:
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+    condition: and(not(failed()), not(canceled()))
 
 - task: VSTest@2
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+    condition: and(not(failed()), not(canceled()))
 
 # Copiar o arquivo WebApp.zip para uma pasta específica
 - task: CopyFiles@2
@@ -34,6 +37,7 @@ steps:
     SourceFolder: '$(build.artifactStagingDirectory)'
     Contents: 'WebApp.zip'
     TargetFolder: '$(build.artifactStagingDirectory)/s3'
+    condition: and(not(failed()), not(canceled()))
 
 - task: S3Upload@1
   inputs:
@@ -43,3 +47,4 @@ steps:
     globExpressions: '**'
     filesAcl: 'public-read-write'
     createBucket: true
+    condition: and(not(failed()), not(canceled()))
