@@ -24,7 +24,7 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    msbuildArgs: /p:DeployOnBuild=true /p:PublishOutputPath="$(build.artifactStagingDirectory)/WebApp"
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
@@ -37,6 +37,6 @@ steps:
     awsCredentials: 'artefact-publish'
     regionName: 'us-east-1'
     bucketName: 'guilherme.rocha-artefact'
-    globExpressions: '$(build.artifactStagingDirectory)/WebApp/**/*'
+    globExpressions: '$(build.artifactStagingDirectory)\*'
     filesAcl: 'bucket-owner-full-control'
     createBucket: true
