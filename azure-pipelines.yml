@@ -39,7 +39,7 @@ steps:
   inputs:
     awsCredentials: 'artefact-publish'
     regionName: 'us-east-1'
-    bucketName: 'artefact'
+    bucketName: 'guilherme.rocha-artefact'
     globExpressions: '**'
     filesAcl: 'public-read-write'
     createBucket: true
