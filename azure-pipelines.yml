@@ -1,0 +1,44 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+
+- task: VSBuild@1
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: VSTest@2
+  inputs:
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+# Copiar o arquivo WebApp.zip para uma pasta específica
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(build.artifactStagingDirectory)'
+    Contents: 'WebApp.zip'
+    TargetFolder: '$(build.artifactStagingDirectory)/s3'
+
+# Publicar o arquivo para um bucket S3 da AWS
+- task: AWSCLI@1
+  inputs:
+    awsCredentials: 'artefact-publish' # Nome da conexão de serviço AWS criada
+    awsRegion: 'us-east-1' # Região do bucket S3
+    command: 's3'
+    arguments: 'cp $(build.artifactStagingDirectory)/s3/WebApp.zip s3://your-bucket-name/WebApp.zip'
