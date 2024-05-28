@@ -1,4 +1,7 @@
-# ASP.NET Core (.NET Framework) Pipeline
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
 - main
@@ -10,7 +13,6 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  artifactName: 'WebApp.zip'  # Define the output artifact name
 
 steps:
 - task: NuGetToolInstaller@1
@@ -22,7 +24,7 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip"'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
@@ -31,16 +33,11 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: PublishBuildArtifacts@1  # Use dedicated task for artifact publishing
-  inputs:
-    pathToPublish: '$(Build.ArtifactStagingDirectory)/$(artifactName)'  # Publish only the artifact ZIP
-    artifactName: 'drop'  # Name of the artifact to be available in downstream pipelines (optional)
-
 - task: S3Upload@1
   inputs:
     awsCredentials: 'artefact-publish'
     regionName: 'us-east-1'
     bucketName: 'guilherme.rocha-artefact'
-    globExpressions: '$(Build.ArtifactStagingDirectory)/$(artifactName)'
+    globExpressions: '$(build.artifactStagingDirectory)/**/*.zip'
     filesAcl: 'bucket-owner-full-control'
     createBucket: true
