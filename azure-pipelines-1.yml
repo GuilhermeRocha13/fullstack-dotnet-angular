@@ -36,7 +36,7 @@ steps:
 
 - script: |
     dir "$(build.artifactStagingDirectory)"
-    displayName: 'file list'
+  displayName: 'file list'
 
 - task: S3Upload@1
   inputs:
