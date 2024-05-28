@@ -1,8 +1,53 @@
-<p>eventos works!</p>
+<!-- <p>eventos works!</p>
 
 
 
-<div *ngFor="let item of eventos">
-    <p>{{item.Tema}}</p>
-    <p>{{item.Local}}</p>
-</div>
+<div *ngFor="let evento of eventos">
+    <p> local: {{evento.local}}</p>
+    <p> tema: {{evento.tema}}</p>
+    <p> lote: {{evento.lote}}</p>
+    <hr>
+</div> -->
+<h2>Eventos</h2>
+
+<form action="" class="form-inline">
+    <div class="form-group mb-2">
+        <input type="text" class="form-control mr-2" placeholder="buscar">
+        <button class="btn btn-outline-success">buscar</button>
+    </div>
+</form>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr id="tabela">
+            <th>id</th>
+            <th>local</th>
+            <th>Data</th>
+            <th>Tema</th>
+            <th>qt pesssoa</th>
+            <th>lote</th>
+            <th>imagem</th>
+            <th>opções</th>
+        </tr>
+    </thead>
+    <tbody *ngIf="eventos && eventos.length">
+        <tr *ngFor="let evento of eventos">
+            <td>{{evento.id}}</td>
+            <td>{{evento.local}}</td>
+            <td>{{evento.dataEvento}}</td>
+            <td>{{evento.tema}}</td>
+            <td>{{evento.qtPessoas}}</td>
+            <td>{{evento.lote}}</td>
+            <td>{{evento.imagemURL}}</td>
+            <td></td>
+        </tr>
+    </tbody>
+    <tfoot *ngIf="!eventos.length">
+        <tr>
+            <td colspan="8" class="text-center">
+            <h4>sem eventos</h4>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+
+
