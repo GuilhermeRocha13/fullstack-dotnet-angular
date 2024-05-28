@@ -4,26 +4,34 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ProEvent.API.Data;
 using ProEvent.API.Models;
 
 namespace ProEvent.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class EventoController : ControllerBase
+    public class EventosController : ControllerBase
     {
 
-        public EventoController()
-        {
 
+        public DataContext _context { get; }
+        public EventosController(DataContext context)
+        {
+            _context = context;
+            
         }
 
-        [HttpGet]
-        public Evento Get()
+         [HttpGet]
+        public IEnumerable<Evento> Get()
         { 
-            return new Evento(){ //as propriedades do novo objeto é definido entre chaves
-                EventoID = 1
-            };
+            return _context.Eventos;
+        }
+
+        [HttpGet("{id}")]
+        public IEnumerable<Evento> Get(int id)
+        { 
+            return _context.Eventos.Where(evento => evento.EventoID == id);
         }
 
 
