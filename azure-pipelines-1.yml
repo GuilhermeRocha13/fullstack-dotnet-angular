@@ -1,0 +1,46 @@
+# ASP.NET Core (.NET Framework) Pipeline
+
+trigger:
+- main
+
+pool:
+  name: Self-hosted
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  artifactName: 'WebApp.zip'  # Define the output artifact name
+
+steps:
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+
+- task: VSBuild@1
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:OutputFileName=$(Build.ArtifactStagingDirectory)/$(artifactName)'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: VSTest@2
+  inputs:
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: PublishBuildArtifacts@1  # Use dedicated task for artifact publishing
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)/$(artifactName)'  # Publish only the artifact ZIP
+    artifactName: 'drop'  # Name of the artifact to be available in downstream pipelines (optional)
+
+- task: S3Upload@1
+  inputs:
+    awsCredentials: 'artefact-publish'
+    regionName: 'us-east-1'
+    bucketName: 'guilherme.rocha-artefact'
+    globExpressions: '$(Build.ArtifactStagingDirectory)/$(artifactName)'
+    filesAcl: 'bucket-owner-full-control'
+    createBucket: true
