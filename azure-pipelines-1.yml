@@ -36,13 +36,13 @@ steps:
 
 - script: |
     dir "$(build.artifactStagingDirectory)"
-  displayName: 'file list'
-
+ 
 - task: S3Upload@1
   inputs:
     awsCredentials: 'artefact-publish'
     regionName: 'us-east-1'
     bucketName: 'guilherme.rocha-artefact'
-    globExpressions: '*.zip'
+    sourceFolder: '$(build.artifactStagingDirectory)'
+    globExpressions: 'WebApp.zip'
     filesAcl: 'bucket-owner-full-control'
     createBucket: true
