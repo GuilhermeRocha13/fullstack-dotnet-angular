@@ -33,6 +33,12 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+# Adiciona etapa para listar arquivos no diretório de staging
+- script: |
+    echo "Listando arquivos no diretório de staging:"
+    dir "$(build.artifactStagingDirectory)"
+  displayName: 'Listar arquivos no diretório de staging'
+
 - task: S3Upload@1
   inputs:
     awsCredentials: 'artefact-publish'
