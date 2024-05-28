@@ -43,6 +43,6 @@ steps:
     awsCredentials: 'artefact-publish'
     regionName: 'us-east-1'
     bucketName: 'guilherme.rocha-artefact'
-    globExpressions: 'C:\agent\_work\6\a'
+    globExpressions: '$(build.artifactStagingDirectory)/**/*.zip'
     filesAcl: 'bucket-owner-full-control'
     createBucket: true
