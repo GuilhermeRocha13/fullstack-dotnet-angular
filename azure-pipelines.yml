@@ -49,9 +49,9 @@ steps:
     WebsiteAuthUserName: 'guilherme'
     WebsiteAuthUserPassword: 'teste*01'
 
-- task: IISWebAppManagementOnMachineGroup@0
-  inputs:
-    IISDeploymentType: 'IISWebsite'
-    ActionIISWebsite: 'StartWebsite'
-    StartStopWebsiteName: 'Default Web Site'
+# - task: IISWebAppManagementOnMachineGroup@0
+#   inputs:
+#     IISDeploymentType: 'IISWebsite'
+#     ActionIISWebsite: 'StartWebsite'
+#     StartStopWebsiteName: 'Default Web Site'
 
