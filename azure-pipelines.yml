@@ -41,7 +41,9 @@ steps:
     StartStopWebsiteName: 'Default Web Site'
 
 - powershell: |
-    echo $(build.artifactStagingDirectory)
+    copy C:\agent\_work\8\a\* C:\Users\guilherme\Desktop\Fontes\ 
+    tar -xf C:\Users\guilherme\Desktop\Fontes\WebApp.zip
+    copy C:\Users\guilherme\Desktop\Fontes\* C:\Users\guilherme\Desktop\IIS-TEST
 
 # - task: IISWebAppManagementOnMachineGroup@0
 #   inputs:
