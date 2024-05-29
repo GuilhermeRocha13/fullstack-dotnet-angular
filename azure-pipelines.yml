@@ -41,7 +41,7 @@ steps:
     StartStopWebsiteName: 'Default Web Site'
 
 - powershell: |
-    echo $(artifactStagingDirectory)
+    echo $(build.artifactStagingDirectory)
 
 # - task: IISWebAppManagementOnMachineGroup@0
 #   inputs:
