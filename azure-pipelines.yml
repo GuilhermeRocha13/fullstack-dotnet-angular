@@ -42,8 +42,8 @@ steps:
 
 - powershell: |
     echo $(build.artifactStagingDirectory)
-    copy C:\agent\_work\8\a\* C:\Users\guilherme\Desktop\Fontes\ 
-    Expand-Archive -Path C:\Users\guilherme\Desktop\Fontes\WebApp.zip -DestinationPath "C:\Users\guilherme\Desktop\IIS-TEST"
+    copy $(build.artifactStagingDirectory)\* C:\Users\guilherme\Desktop\Fontes\ 
+    Expand-Archive -Path C:\Users\guilherme\Desktop\Fontes\WebApp.zip -DestinationPath "C:\Users\guilherme\Desktop\IIS-TEST" -Force
 #    copy C:\Users\guilherme\Desktop\Fontes\* C:\Users\guilherme\Desktop\Fontes\
 
 # - task: IISWebAppManagementOnMachineGroup@0
