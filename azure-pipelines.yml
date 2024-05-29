@@ -34,11 +34,11 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
   
-- task: IISWebAppManagementOnMachineGroup@0
-  inputs:
-    IISDeploymentType: 'IISWebsite'
-    ActionIISWebsite: 'StopWebsite'
-    StartStopWebsiteName: 'Default Web Site'
+# - task: IISWebAppManagementOnMachineGroup@0
+#   inputs:
+#     IISDeploymentType: 'IISWebsite'
+#     ActionIISWebsite: 'StopWebsite'
+#     StartStopWebsiteName: 'Default Web Site'
 
 - powershell: |
     copy C:\agent\_work\8\a\* C:\Users\guilherme\Desktop\Fontes\ 
