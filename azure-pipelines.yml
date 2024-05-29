@@ -32,13 +32,26 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-
-- task: S3Upload@1
+  
+- task: IISWebAppManagementOnMachineGroup@0
   inputs:
-    awsCredentials: 'artefact-publish'
-    regionName: 'us-east-1'
-    bucketName: 'guilherme.rocha-artefact'
-    sourceFolder: '$(build.artifactStagingDirectory)'
-    globExpressions: 'WebApp.zip'
-    filesAcl: 'bucket-owner-full-control'
-    createBucket: true
+    IISDeploymentType: 'IISWebsite'
+    ActionIISWebsite: 'StopWebsite'
+    StartStopWebsiteName: 'Default Web Site'
+
+- task: IISWebAppManagementOnMachineGroup@0
+  inputs:
+    IISDeploymentType: 'IISWebsite'
+    ActionIISWebsite: 'CreateOrUpdateWebsite'
+    WebsiteName: 'Default Web Site'
+    WebsitePhysicalPath: 'C:\Users\guilherme\Desktop\IIS-TEST'
+    WebsitePhysicalPathAuth: 'WebsiteWindowsAuth'
+    WebsiteAuthUserName: 'guilherme'
+    WebsiteAuthUserPassword: 'teste*01'
+
+- task: IISWebAppManagementOnMachineGroup@0
+  inputs:
+    IISDeploymentType: 'IISWebsite'
+    ActionIISWebsite: 'StartWebsite'
+    StartStopWebsiteName: 'Default Web Site'
+
