@@ -40,11 +40,6 @@ steps:
     ActionIISWebsite: 'StopWebsite'
     StartStopWebsiteName: 'Default Web Site'
 
-- powershell: |
-    echo $(build.artifactStagingDirectory)
-    copy $(build.artifactStagingDirectory)\* C:\Users\guilherme\Desktop\Fontes\ 
-    Expand-Archive -Path C:\Users\guilherme\Desktop\Fontes\WebApp.zip -DestinationPath "C:\Users\guilherme\Desktop\IIS-TEST" -Force
-
 - task: IISWebAppManagementOnMachineGroup@0
   inputs:
     IISDeploymentType: 'IISWebsite'
@@ -54,6 +49,12 @@ steps:
     WebsitePhysicalPathAuth: 'WebsiteWindowsAuth'
     WebsiteAuthUserName: $(user)
     WebsiteAuthUserPassword: $(password)
+
+- powershell: |
+    echo $(build.artifactStagingDirectory)
+    copy $(build.artifactStagingDirectory)\* C:\Users\guilherme\Desktop\Fontes\ 
+    Expand-Archive -Path C:\Users\guilherme\Desktop\Fontes\WebApp.zip -DestinationPath "C:\Users\guilherme\Desktop\IIS-TEST" -Force
+
 
 - task: IISWebAppManagementOnMachineGroup@0
   inputs:
