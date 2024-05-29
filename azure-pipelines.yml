@@ -39,15 +39,18 @@ steps:
     ActionIISWebsite: 'StopWebsite'
     StartStopWebsiteName: 'Default Web Site'
 
-- task: IISWebAppManagementOnMachineGroup@0
-  inputs:
-    IISDeploymentType: 'IISWebsite'
-    ActionIISWebsite: 'CreateOrUpdateWebsite'
-    WebsiteName: 'Default Web Site'
-    WebsitePhysicalPath: 'C:\Users\guilherme\Desktop\IIS-TEST'
-    WebsitePhysicalPathAuth: 'WebsiteWindowsAuth'
-    WebsiteAuthUserName: 'guilherme'
-    WebsiteAuthUserPassword: 'teste*01'
+- powershell: |
+    echo %cd%
+
+# - task: IISWebAppManagementOnMachineGroup@0
+#   inputs:
+#     IISDeploymentType: 'IISWebsite'
+#     ActionIISWebsite: 'CreateOrUpdateWebsite'
+#     WebsiteName: 'Default Web Site'
+#     WebsitePhysicalPath: 'C:\Users\guilherme\Desktop\IIS-TEST'
+#     WebsitePhysicalPathAuth: 'WebsiteWindowsAuth'
+#     WebsiteAuthUserName: 'guilherme'
+#     WebsiteAuthUserPassword:  ###
 
 # - task: IISWebAppManagementOnMachineGroup@0
 #   inputs:
