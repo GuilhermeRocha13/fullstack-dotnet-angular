@@ -1,8 +1,3 @@
-# ASP.NET Core (.NET Framework)
-# Build and test ASP.NET Core projects targeting the full .NET Framework.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
-
 trigger:
 - main
 
@@ -13,6 +8,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  artifactStagingDirectory: '$(Build.SourcesDirectory)/staging'
 
 steps:
 - task: NuGetToolInstaller@1
@@ -24,8 +20,7 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(shortOutputPath)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
@@ -33,7 +28,7 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-  
+
 - task: IISWebAppManagementOnMachineGroup@0
   inputs:
     IISDeploymentType: 'IISWebsite'
@@ -41,7 +36,7 @@ steps:
     StartStopWebsiteName: 'Default Web Site'
 
 - powershell: |
-    echo $(build.artifactStagingDirectory)
+    Expand-Archive -Path "$(shortOutputPath)\WebApp.zip" -DestinationPath "$(Build.ArtifactStagingDirectory)\WebApp"
 
 # - task: IISWebAppManagementOnMachineGroup@0
 #   inputs:
@@ -58,4 +53,3 @@ steps:
 #     IISDeploymentType: 'IISWebsite'
 #     ActionIISWebsite: 'StartWebsite'
 #     StartStopWebsiteName: 'Default Web Site'
-
