@@ -34,31 +34,30 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
   
-# - task: IISWebAppManagementOnMachineGroup@0
-#   inputs:
-#     IISDeploymentType: 'IISWebsite'
-#     ActionIISWebsite: 'StopWebsite'
-#     StartStopWebsiteName: 'Default Web Site'
+- task: IISWebAppManagementOnMachineGroup@0
+  inputs:
+    IISDeploymentType: 'IISWebsite'
+    ActionIISWebsite: 'StopWebsite'
+    StartStopWebsiteName: 'Default Web Site'
 
 - powershell: |
     echo $(build.artifactStagingDirectory)
     copy $(build.artifactStagingDirectory)\* C:\Users\guilherme\Desktop\Fontes\ 
     Expand-Archive -Path C:\Users\guilherme\Desktop\Fontes\WebApp.zip -DestinationPath "C:\Users\guilherme\Desktop\IIS-TEST" -Force
-#    copy C:\Users\guilherme\Desktop\Fontes\* C:\Users\guilherme\Desktop\Fontes\
 
-# - task: IISWebAppManagementOnMachineGroup@0
-#   inputs:
-#     IISDeploymentType: 'IISWebsite'
-#     ActionIISWebsite: 'CreateOrUpdateWebsite'
-#     WebsiteName: 'Default Web Site'
-#     WebsitePhysicalPath: 'C:\Users\guilherme\Desktop\IIS-TEST'
-#     WebsitePhysicalPathAuth: 'WebsiteWindowsAuth'
-#     WebsiteAuthUserName: 'guilherme'
-#     WebsiteAuthUserPassword:  ###
+- task: IISWebAppManagementOnMachineGroup@0
+  inputs:
+    IISDeploymentType: 'IISWebsite'
+    ActionIISWebsite: 'CreateOrUpdateWebsite'
+    WebsiteName: 'Default Web Site'
+    WebsitePhysicalPath: 'C:\Users\guilherme\Desktop\IIS-TEST'
+    WebsitePhysicalPathAuth: 'WebsiteWindowsAuth'
+    WebsiteAuthUserName: $(user)
+    WebsiteAuthUserPassword: $(password)
 
-# - task: IISWebAppManagementOnMachineGroup@0
-#   inputs:
-#     IISDeploymentType: 'IISWebsite'
-#     ActionIISWebsite: 'StartWebsite'
-#     StartStopWebsiteName: 'Default Web Site'
+- task: IISWebAppManagementOnMachineGroup@0
+  inputs:
+    IISDeploymentType: 'IISWebsite'
+    ActionIISWebsite: 'StartWebsite'
+    StartStopWebsiteName: 'Default Web Site'
 
