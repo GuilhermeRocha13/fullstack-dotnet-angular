@@ -1,0 +1,76 @@
+trigger:
+- deploy
+
+pool:
+  name: Self-hosted
+
+variables:
+  solutions: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solutions)'
+
+- powershell: |
+    $solutions = Get-ChildItem -Path "$(Build.SourcesDirectory)" -Recurse -Filter *.sln
+    foreach ($solution in $solutions) {
+        Write-Output "Building $($solution.FullName)"
+
+        # Build the solution
+        & "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" `
+            $solution.FullName `
+            /p:DeployOnBuild=true `
+            /p:WebPublishMethod=Package `
+            /p:PackageAsSingleFile=true `
+            /p:SkipInvalidConfigurations=true `
+            /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\$($solution.BaseName).zip" `
+            /p:DeployIisAppPath="Default Web Site" `
+            /p:Configuration=$(buildConfiguration) `
+            /p:Platform=$(buildPlatform)
+
+        # Run tests
+        & "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" `
+            $solution.FullName `
+            /Platform:$(buildPlatform) `
+            /Configuration:$(buildConfiguration)
+
+        # Copy artifacts
+        $zipPath = "$(build.artifactStagingDirectory)\$($solution.BaseName).zip"
+        $destinationPath = "C:\Users\guilherme\Desktop\Fontes\$($solution.BaseName)"
+        mkdir $destinationPath -Force
+        Copy-Item -Path $zipPath -Destination $destinationPath
+        Expand-Archive -Path $zipPath -DestinationPath $destinationPath -Force
+    }
+
+- task: IISWebAppManagementOnMachineGroup@0
+  inputs:
+    IISDeploymentType: 'IISWebsite'
+    ActionIISWebsite: 'StopWebsite'
+    StartStopWebsiteName: 'Default Web Site'
+
+- task: IISWebAppManagementOnMachineGroup@0
+  inputs:
+    IISDeploymentType: 'IISWebsite'
+    ActionIISWebsite: 'CreateOrUpdateWebsite'
+    WebsiteName: 'Default Web Site'
+    WebsitePhysicalPath: 'C:\Users\guilherme\Desktop\IIS-TEST'
+    WebsitePhysicalPathAuth: 'WebsiteWindowsAuth'
+    WebsiteAuthUserName: $(user)
+    WebsiteAuthUserPassword: $(password)
+
+- powershell: |
+    $artifacts = Get-ChildItem -Path "$(build.artifactStagingDirectory)" -Filter *.zip
+    foreach ($artifact in $artifacts) {
+        Expand-Archive -Path $artifact.FullName -DestinationPath "C:\Users\guilherme\Desktop\IIS-TEST" -Force
+    }
+
+- task: IISWebAppManagementOnMachineGroup@0
+  inputs:
+    IISDeploymentType: 'IISWebsite'
+    ActionIISWebsite: 'StartWebsite'
+    StartStopWebsiteName: 'Default Web Site'
