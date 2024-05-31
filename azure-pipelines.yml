@@ -10,7 +10,7 @@ pool:
   name: Self-hosted
 
 variables:
-  solution: '**/fullstack-dotnet-angular.sln'
+  solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
@@ -24,7 +24,7 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\FullStack.zip" /p:DeployIisAppPath="Default Web Site"'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
 
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
@@ -34,22 +34,15 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
   
+
 - task: IISWebAppManagementOnMachineGroup@0
   inputs:
     IISDeploymentType: 'IISWebsite'
     ActionIISWebsite: 'StopWebsite'
     StartStopWebsiteName: 'Default Web Site'
 
-
-
 - powershell: |
     echo $(build.artifactStagingDirectory)
     copy $(build.artifactStagingDirectory)\* C:\Users\guilherme\Desktop\Fontes\ 
     Expand-Archive -Path C:\Users\guilherme\Desktop\Fontes\WebApp.zip -DestinationPath "C:\Users\guilherme\Desktop\IIS-TEST" -Force
 
-
-- task: IISWebAppManagementOnMachineGroup@0
-  inputs:
-    IISDeploymentType: 'IISWebsite'
-    ActionIISWebsite: 'StartWebsite'
-    StartStopWebsiteName: 'Default Web Site'
