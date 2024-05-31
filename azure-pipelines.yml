@@ -10,7 +10,7 @@ pool:
   name: Self-hosted
 
 variables:
-  solution: '**/*.sln'
+  solution: '**/fullstack-dotnet-angular.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
@@ -24,7 +24,7 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\FullStack.zip" /p:DeployIisAppPath="Default Web Site"'
 
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
@@ -40,15 +40,6 @@ steps:
     ActionIISWebsite: 'StopWebsite'
     StartStopWebsiteName: 'Default Web Site'
 
-- task: IISWebAppManagementOnMachineGroup@0
-  inputs:
-    IISDeploymentType: 'IISWebsite'
-    ActionIISWebsite: 'CreateOrUpdateWebsite'
-    WebsiteName: 'Default Web Site'
-    WebsitePhysicalPath: 'C:\Users\guilherme\Desktop\IIS-TEST'
-    WebsitePhysicalPathAuth: 'WebsiteWindowsAuth'
-    WebsiteAuthUserName: $(user)
-    WebsiteAuthUserPassword: $(password)
 
 
 - powershell: |
