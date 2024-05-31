@@ -24,7 +24,7 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\fullstack.zip" /p:DeployIisAppPath="Default Web Site"'
 
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
@@ -40,20 +40,12 @@ steps:
     ActionIISWebsite: 'StopWebsite'
     StartStopWebsiteName: 'Default Web Site'
 
-- task: IISWebAppManagementOnMachineGroup@0
-  inputs:
-    IISDeploymentType: 'IISWebsite'
-    ActionIISWebsite: 'CreateOrUpdateWebsite'
-    WebsiteName: 'Default Web Site'
-    WebsitePhysicalPath: 'C:\Users\guilherme\Desktop\IIS-TEST'
-    WebsitePhysicalPathAuth: 'WebsiteWindowsAuth'
-    WebsiteAuthUserName: $(user)
-    WebsiteAuthUserPassword: $(password)
 
 - powershell: |
     echo $(build.artifactStagingDirectory)
-    copy $(build.artifactStagingDirectory)\* C:\Users\guilherme\Desktop\Fontes\ 
-    Expand-Archive -Path C:\Users\guilherme\Desktop\Fontes\WebApp.zip -DestinationPath "C:\Users\guilherme\Desktop\IIS-TEST" -Force
+    Expand-Archive -Path $(build.artifactStagingDirectory)\fullstack.zip -DestinationPath "C:\Users\guilherme\Desktop\Fontes" -Force
+    del C:\Users\guilherme\Desktop\Fontes\Content\C_C\agent\_work\8\s\Back\src\ProEvent.API\obj\Release\net5.0\PubTmp\Out\web.config
+    copy \Users\guilherme\Desktop\Fontes\* \Users\guilherme\Desktop\IIS-TEST
 
 
 - task: IISWebAppManagementOnMachineGroup@0
