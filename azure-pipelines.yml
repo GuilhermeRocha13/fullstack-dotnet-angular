@@ -34,7 +34,14 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
   
-
+- powershell: |
+    $configPath = "$env:SystemRoot\System32\inetsrv\config\redirection.config"
+    $acl = Get-Acl $configPath
+    $permission = "grupoqw\guilherme.rocha", "FullControl", "Allow"
+    $accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule $permission
+    $acl.SetAccessRule($accessRule)
+    Set-Acl $configPath $acl
+  displayName: 'Set permissions for redirection.config'
 - task: IISWebAppManagementOnMachineGroup@0
   inputs:
     IISDeploymentType: 'IISWebsite'
