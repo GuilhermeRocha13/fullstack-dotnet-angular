@@ -41,10 +41,10 @@ namespace ProEvent.API.Controllers
             return "post";
         }
         
-        [HttpPut("{id}")]
+        // [HttpPut("{id}")]
 
-        public string Post(int id){
-            return "post" + id;
-        }
+        // public string Post(int id){
+        //     return "post" + id;
+        // }
     }
 }
