@@ -14,6 +14,7 @@ import { response } from 'express';
 export class EventosComponent {
 
   public eventos: any = [] ;
+  private _filtroLista: string = ''
 
   
   
@@ -30,8 +31,22 @@ export class EventosComponent {
       error => console.log(error)
     );
   }
-  public teste(): void{
-    
   
+  public get filtroLista(): string{
+    return this._filtroLista;
   }
+
+  public set filtroLista(value: string){
+    this._filtroLista = value;
+    this.eventos = this.filtroLista ? this.filtrarEventos(this._filtroLista) : this.eventos
+  }
+
+  filtrarEventos(filtrarPor: string): any{
+    filtrarPor = filtrarPor.toLowerCase();
+    return this.eventos.filter(
+      (      evento: { tema: string; }) => evento.tema.toLowerCase().indexOf(filtrarPor)
+    )
+  } 
+
+
 }
