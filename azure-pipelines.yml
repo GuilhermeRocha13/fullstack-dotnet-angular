@@ -50,6 +50,7 @@ steps:
     WebsiteAuthUserName: $(user)
     WebsiteAuthUserPassword: $(password)
 
+
 - powershell: |
     echo $(build.artifactStagingDirectory)
     copy $(build.artifactStagingDirectory)\* C:\Users\guilherme\Desktop\Fontes\ 
