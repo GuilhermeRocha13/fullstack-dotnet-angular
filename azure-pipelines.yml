@@ -43,7 +43,7 @@ steps:
 
 - powershell: |
     echo $(build.artifactStagingDirectory)
-    Expand-Archive -Path $(build.artifactStagingDirectory)\fullstack.zip -DestinationPath "C:\Users\guilherme\Desktop\Fontes" -Force
+    Expand-Archive -Path $(build.artifactStagingDirectory)\WebbApp.zip -DestinationPath "C:\Users\guilherme\Desktop\Fontes" -Force
     del C:\Users\guilherme\Desktop\Fontes\Content\C_C\agent\_work\8\s\Back\src\ProEvent.API\obj\Release\net5.0\PubTmp\Out\web.config
     copy \Users\guilherme\Desktop\Fontes\* \Users\guilherme\Desktop\IIS-TEST
 
