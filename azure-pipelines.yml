@@ -10,7 +10,7 @@ pool:
   name: Self-hosted
 
 variables:
-  solution: '**/*.sln'
+  solution: 'fullstack-dotnet-angular.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
