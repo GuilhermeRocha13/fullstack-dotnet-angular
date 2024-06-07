@@ -5,7 +5,9 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  name: Self-hosted
 
 steps:
-- script: echo This pipeline runs first !
+
+- powershell: |
+    echo 23
