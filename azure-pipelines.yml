@@ -1,52 +1,17 @@
-# ASP.NET Core (.NET Framework)
-# Build and test ASP.NET Core projects targeting the full .NET Framework.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+name: SecondPipeline 
 
-trigger:
-- main
+trigger: none
+
+# this pipeline will be triggered by another pipeline
+resources:
+  pipelines:
+  - pipeline: previous-pipeline-trigger   # Name of the pipeline resource
+    source: First-Pipeline-yaml # Name of the pipeline referenced by the pipeline resource
+    trigger: true # enable the trigger
 
 pool:
-  name: Self-hosted
-
-variables:
-  solution: 'fullstack-dotnet-angular.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+  vmImage: windows-latest
 
 steps:
-- task: NuGetToolInstaller@1
-
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
-
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-  
-- task: IISWebAppManagementOnMachineGroup@0
-  inputs:
-    IISDeploymentType: 'IISWebsite'
-    ActionIISWebsite: 'StopWebsite'
-    StartStopWebsiteName: 'Default Web Site'
-
-- powershell: |
-    echo $(build.artifactStagingDirectory)
-    copy $(build.artifactStagingDirectory)\* C:\Users\guilherme\Desktop\Fontes\ 
-    Expand-Archive -Path C:\Users\guilherme\Desktop\Fontes\WebApp.zip -DestinationPath "C:\Users\guilherme\Desktop\IIS-TEST" -Force
-
-- task: IISWebAppManagementOnMachineGroup@0
-  inputs:
-    IISDeploymentType: 'IISWebsite'
-    ActionIISWebsite: 'StartWebsite'
-    StartStopWebsiteName: 'Default Web Site'
+  - powershell: |
+      echo teste
